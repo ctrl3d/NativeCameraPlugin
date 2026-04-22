@@ -1,4 +1,4 @@
-package com.viv.nativecamera
+package work.ctrl3d.camerax
 
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CaptureRequest

@@ -7,7 +7,7 @@ base {
 }
 
 android {
-    namespace = "com.viv.nativecamera"
+    namespace = "work.ctrl3d.camerax"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

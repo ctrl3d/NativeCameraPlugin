@@ -1,4 +1,4 @@
-package com.viv.nativecamera
+package work.ctrl3d.camerax
 
 import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext

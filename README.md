@@ -41,7 +41,7 @@ packages/work.ctrl3d.camerax/
 ```
 
 빌드된 `NativeCameraPlugin-release.aar` 파일은 패키지 내 `Plugins/Android/` 경로에 배치하여 사용합니다.
-Unity(C#) 스크립트에서는 `AndroidJavaObject` 또는 JNI 리플렉션을 사용하여 `com.viv.nativecamera.NativeCameraPlugin` 클래스의 static 메서드를 호출합니다.
+Unity(C#) 스크립트에서는 `AndroidJavaObject` 또는 JNI 리플렉션을 사용하여 `work.ctrl3d.camerax.NativeCameraPlugin` 클래스의 static 메서드를 호출합니다.
 
 ### 제공되는 핵심 API (Kotlin)
 ```kotlin

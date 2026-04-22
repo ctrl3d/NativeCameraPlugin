@@ -1,4 +1,4 @@
-package com.viv.nativecamera
+package work.ctrl3d.camerax
 
 import android.app.Activity
 import androidx.annotation.Keep
