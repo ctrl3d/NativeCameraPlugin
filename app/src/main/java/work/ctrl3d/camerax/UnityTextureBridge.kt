@@ -3,13 +3,14 @@ package work.ctrl3d.camerax
 import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
+import java.util.concurrent.atomic.AtomicBoolean
 
 class UnityTextureBridge(private val width: Int, private val height: Int) {
 
     lateinit var surfaceTexture: SurfaceTexture
         private set
     private var textureId = 0
-    @Volatile private var frameAvailable = false
+    private val frameAvailable = AtomicBoolean(false)
 
     fun createExternalTexture(): Int {
         val textures = IntArray(1)
@@ -28,19 +29,19 @@ class UnityTextureBridge(private val width: Int, private val height: Int) {
 
         surfaceTexture = SurfaceTexture(textureId).apply {
             setDefaultBufferSize(width, height)
-            setOnFrameAvailableListener { frameAvailable = true }
+            setOnFrameAvailableListener { frameAvailable.set(true) }
         }
         return textureId
     }
 
     fun update(): Boolean {
-        if (!frameAvailable) return false
+        if (!frameAvailable.compareAndSet(true, false)) return false
         surfaceTexture.updateTexImage()
-        frameAvailable = false
         return true
     }
 
     fun release() {
+        surfaceTexture.setOnFrameAvailableListener(null)
         surfaceTexture.release()
         GLES20.glDeleteTextures(1, intArrayOf(textureId), 0)
     }

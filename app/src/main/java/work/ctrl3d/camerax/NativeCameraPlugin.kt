@@ -25,29 +25,14 @@ object NativeCameraPlugin {
     }
 
     @androidx.annotation.OptIn(
-        androidx.camera.camera2.interop.ExperimentalCamera2Interop::class,
         androidx.camera.lifecycle.ExperimentalCameraProviderConfiguration::class
     )
     private fun ensureConfigured() {
         if (!configured.compareAndSet(false, true)) return
 
-        val limiter = androidx.camera.core.CameraSelector.Builder()
-            .addCameraFilter { infos ->
-                if (useSingleCameraWorkaround) {
-                    infos.filter {
-                        val id = androidx.camera.camera2.interop.Camera2CameraInfo
-                            .from(it).cameraId
-                        id == "0"
-                    }
-                } else {
-                    infos
-                }
-            }
-            .build()
-
         val config = androidx.camera.core.CameraXConfig.Builder
             .fromConfig(androidx.camera.camera2.Camera2Config.defaultConfig())
-            .setAvailableCamerasLimiter(limiter)
+            .setCameraExecutor(java.util.concurrent.Executors.newSingleThreadExecutor())
             .setMinimumLoggingLevel(android.util.Log.WARN)
             .build()
 
@@ -63,13 +48,13 @@ object NativeCameraPlugin {
     @JvmStatic
     @Keep
     fun startPreview(width: Int, height: Int, useFrontCamera: Boolean): Int {
-        ensureConfigured()
         if (session != null) stopPreview()
         val activity: Activity = UnityPlayer.currentActivity
         val bridge = UnityTextureBridge(width, height)
         val textureId = bridge.createExternalTexture()
 
         activity.runOnUiThread {
+            ensureConfigured()
             session = CameraXSession(activity, bridge, useFrontCamera).also {
                 it.start(width, height)
             }
