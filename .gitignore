@@ -1,0 +1,10 @@
+# Gradle & Build 결과물
+.gradle/
+build/
+app/build/
+unity-stub/build/
+
+# Android Studio / IDE 설정 파일
+.idea/
+*.iml
+local.properties
