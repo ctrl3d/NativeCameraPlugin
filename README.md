@@ -58,6 +58,7 @@ Unity(C#) 스크립트에서는 `AndroidJavaObject` 또는 JNI 리플렉션을 �
 @JvmStatic fun setAutoFocus()
 @JvmStatic fun setTorchEnabled(enabled: Boolean)
 @JvmStatic fun setZoomRatio(ratio: Float)
+@JvmStatic fun setExposureCompensation(index: Int)
 
 // 사진 촬영 및 지원 정보
 @JvmStatic fun takePhoto(savePath: String)

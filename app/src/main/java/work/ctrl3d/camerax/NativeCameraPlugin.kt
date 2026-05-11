@@ -112,6 +112,11 @@ object NativeCameraPlugin {
     }
 
     @JvmStatic @Keep
+    fun setExposureCompensation(index: Int) {
+        session?.controls?.let { it.setExposureCompensation(index) }
+    }
+
+    @JvmStatic @Keep
     fun takePhoto(savePath: String) {
         session?.takePhoto(savePath)
     }

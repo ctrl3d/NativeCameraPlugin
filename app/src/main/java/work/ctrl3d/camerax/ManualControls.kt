@@ -20,6 +20,7 @@ class ManualControls(private val camera: Camera) {
     private var currentIso: Int? = null
     private var currentShutter: Long? = null
     private var currentFocus: Float? = null
+    private var currentExposureIndex = 0
 
     fun setAutoExposure(enabled: Boolean) {
         autoExposure = enabled
@@ -56,6 +57,11 @@ class ManualControls(private val camera: Camera) {
         camera.cameraControl.setZoomRatio(ratio)
     }
 
+    fun setExposureCompensation(index: Int) {
+        currentExposureIndex = index
+        camera.cameraControl.setExposureCompensationIndex(index)
+    }
+
     private fun apply() {
         val builder = CaptureRequestOptions.Builder()
         if (autoExposure) {
@@ -87,6 +93,8 @@ class ManualControls(private val camera: Camera) {
             CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE)
         val expRange = info.getCameraCharacteristic(
             CameraCharacteristics.SENSOR_INFO_EXPOSURE_TIME_RANGE)
+        val compensationRange = camera.cameraInfo.exposureState.exposureCompensationRange
+        val compensationStep = camera.cameraInfo.exposureState.exposureCompensationStep
         val minFocus = info.getCameraCharacteristic(
             CameraCharacteristics.LENS_INFO_MINIMUM_FOCUS_DISTANCE)
         val hwLevel = info.getCameraCharacteristic(
@@ -100,6 +108,9 @@ class ManualControls(private val camera: Camera) {
             put("isoMax", isoRange?.upper ?: 0)
             put("exposureMinNs", expRange?.lower ?: 0)
             put("exposureMaxNs", expRange?.upper ?: 0)
+            put("exposureCompensationMin", compensationRange.lower)
+            put("exposureCompensationMax", compensationRange.upper)
+            put("exposureCompensationStep", compensationStep.toFloat())
             put("minFocusDiopter", minFocus ?: 0f)
             put("hardwareLevel", hwLevel ?: -1)
 
